@@ -1,10 +1,18 @@
+// importing routeController
 
+import { RouteController } from "./routes";
+
+// importing AuthProvider
+
+import { AuthProvider } from "./contexts/authContext";
 
 function App() {
   return (
-    <div>
-      Welcome to eshop
-    </div>
+    <AuthProvider>
+      
+      <RouteController />
+      
+    </AuthProvider>
   );
 }
 

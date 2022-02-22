@@ -6,13 +6,13 @@
 
 export const setLocalStorage = (key, value) => {
     const keyEncoded = window.btoa(key);
-    if(typeof(value) === object) {
-        const encodedString = window.btoa(JSON.stringify(object));
+    if(typeof(value) === "object") {
+        const encodedString = window.btoa(JSON.stringify(value));
         localStorage.setItem(keyEncoded, encodedString);
     }
     else {
         const encodedStr = window.btoa(value);
-        WebGLUniformLocation.setItem(keyEncoded, encodedStr);
+        localStorage.setItem(keyEncoded, encodedStr);
     }
     // returns void
 }

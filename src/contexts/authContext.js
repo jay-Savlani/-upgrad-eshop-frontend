@@ -40,7 +40,21 @@ export const AuthProvider = (props) => {
 
     const [shouldUserNavigate, setShouldUserNavigate] = useState(false);
 
-    const [role, setRole] = useState(currentUser.role || JSON.parse(utils.getLocalStorage(USER)).role)
+    // function to find role
+
+    function findRole() {
+        if(currentUser) {
+            return currentUser.role;
+        }
+        else if(JSON.parse(utils.getLocalStorage(USER))) {
+            return JSON.parse(utils.getLocalStorage(USER)).role;
+        }
+        else {
+            return "";
+        }
+    }
+
+    const [role, setRole] = useState(findRole());
 
     // get current logged in user details
 
@@ -142,7 +156,7 @@ export const AuthProvider = (props) => {
     return (
         <AuthContext.Provider value={authValues}>
             {/* Rendering children */}
-            props.children
+            {props.children}
         </AuthContext.Provider>
     )
 }
