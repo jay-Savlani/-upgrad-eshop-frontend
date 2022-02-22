@@ -6,6 +6,17 @@ import { utilsApi } from "./utils-api";
 
 import { apiConstants } from "./utils-api";
 
+// importing utility functions
+
+import * as utils from "../utils/utils";
+
+// importin useAuthContext
+
+import { useAuth } from "../contexts/authContext";
+
+// token is used in many places hence keeping it global
+
+const {token} = useAuth();
 
 /**
  * Function to get products based on product id as url param or on query data as url query
@@ -57,7 +68,7 @@ export const getProductCategories = (successCb,failureCb) => {
  * @param {Function} failureCb - Function to be executed if request fails
  */
 
-export const addProduct = (productData, token ,successCb, failureCb) => {
+export const addProduct = (productData,successCb, failureCb) => {
     // make axios request
     utilsApi.sendAxiosRequest(
         apiConstants.HTTP_METHOD.POST,
@@ -79,7 +90,7 @@ export const addProduct = (productData, token ,successCb, failureCb) => {
  * @param {Function} failureCb - Function to be executed if request fails
  */
 
- export const modifyProduct = (productData, token ,successCb, failureCb) => {
+ export const modifyProduct = (productData ,successCb, failureCb) => {
     // make axios request
     utilsApi.sendAxiosRequest(
         apiConstants.HTTP_METHOD.POST,
@@ -102,7 +113,7 @@ export const addProduct = (productData, token ,successCb, failureCb) => {
  * @param {Function} failureCb - Function to be executed if request fails
  */
 
- export const deleteProduct = (paramsArray, token ,successCb, failureCb) => {
+ export const deleteProduct = (paramsArray ,successCb, failureCb) => {
     // make axios request
     utilsApi.sendAxiosRequest(
         apiConstants.HTTP_METHOD.POST,

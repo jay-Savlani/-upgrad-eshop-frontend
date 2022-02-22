@@ -86,7 +86,7 @@ export const sendAxiosRequest = async (
         // checking if response is 200
         if(response && response.status === 200) {
             // if successCb exists then call it with passing response data
-            if(successCb) 
+            if(successCb, response.headers) 
                 successCb(response.data);
         }
     }

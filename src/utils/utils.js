@@ -32,3 +32,5 @@ export const getLocalStorage = (key) => {
     // return the JSON string
     return valueDecoded;
 }
+
+

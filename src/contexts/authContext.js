@@ -35,6 +35,7 @@ export const AuthProvider = (props) => {
 
     const [loginResponse, setLoginResponse] = useState("");
     const [signUpResponse, setSignUpResponse] = useState("");
+    const [token, setToken] = useState(utils.getLocalStorage(TOKEN) ? utils.getLocalStorage(TOKEN) : "");
 
     // should user be redirected to page (when login is successfull)
 
@@ -76,11 +77,15 @@ export const AuthProvider = (props) => {
             email,
             password,
             // successCb
-            (response) => {
+            (response, headers) => {
                 if (response.user) {
                     setCurrentUser(response.user);
                     // store in local storage
                     utils.setLocalStorage(USER, response.user);
+                    // setting token in local storage 
+                    utils.setLocalStorage(TOKEN, headers["x-auth-token"]);
+                    // setting token 
+                    setToken(headers["x-auth-token"]);
                     // set login response
                     setLoginResponse(response.message);
                     // setting role 
@@ -134,13 +139,17 @@ export const AuthProvider = (props) => {
         setIsLoggedIn(false);
         // set role as empty
         setRole("");
+        // removing token
+        setToken("");
+
         successCallback();
-    }
+     }
 
     // creating authValues object which can be accessed anywhere in the application
 
     const authValues = {
         isLoggedIn,
+        token,
         role,
         login,
         loginResponse,
