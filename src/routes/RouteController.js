@@ -1,22 +1,29 @@
 // importing essentials from react-router-dom
 
-import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // importing components 
 
-import { Navbar } from "../components";
+import { Navbar, Login, Layout } from "../components";
 
 // importing ProtectedRoute
 
-import { ProtectedRoute } from ".";
+import { ProtectedRoute, routeConstants } from ".";
 
+// importing AuthProvider
 
-export default function RouteController(){
+import { AuthProvider } from "../contexts/authContext";
+
+export default function RouteController() {
     return (
         <Router>
-            <Routes>
-                <Route exact path="/signin" element={<Navbar />} />               
-            </Routes>
+            <AuthProvider>
+                <Routes>
+                    <Route path="/" element={<Layout />} >
+                        <Route exact path="signin" element={<Login />} />
+                    </Route>
+                </Routes>
+            </AuthProvider>
         </Router>
     )
 }

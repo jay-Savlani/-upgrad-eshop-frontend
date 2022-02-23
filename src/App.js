@@ -6,13 +6,32 @@ import { RouteController } from "./routes";
 
 import { AuthProvider } from "./contexts/authContext";
 
+// imports for material ui
+
+import { unstable_createMuiStrictModeTheme as createMuiTheme, ThemeProvider } from "@material-ui/core";
+
+
+import { Route } from "react-router-dom";
+
+// overriding default material ui theme
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#3f51b5",
+      light: "#7986cb"
+    },
+    secondary: {
+      main: "#f50057"
+    }
+  }
+})
+
 function App() {
   return (
-    <AuthProvider>
-      
+    <ThemeProvider theme={theme} >
       <RouteController />
-      
-    </AuthProvider>
+    </ThemeProvider>
   );
 }
 

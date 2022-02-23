@@ -27,11 +27,11 @@ export const AuthProvider = (props) => {
 
     // setting states
 
-    const [currentUser, setCurrentUser] = useState({});
+    const [currentUser, setCurrentUser] = useState(null);
 
     // when page is reloaded it will check if current user exists or user exists in local storage and it will set isLoggedIn as true
 
-    const [isLoggedIn, setIsLoggedIn] = useState(currentUser || utils.getLocalStorage(USER) ? true : false);
+    const [isLoggedIn, setIsLoggedIn] = useState(/*currentUser || utils.getLocalStorage(USER) ? true : false */false);
 
     const [loginResponse, setLoginResponse] = useState("");
     const [signUpResponse, setSignUpResponse] = useState("");
@@ -45,9 +45,11 @@ export const AuthProvider = (props) => {
 
     function findRole() {
         if(currentUser) {
+            console.log("entered current user if");
             return currentUser.role;
         }
-        else if(JSON.parse(utils.getLocalStorage(USER))) {
+        else if(utils.getLocalStorage(USER)) {
+            console.log("entered json parse if");
             return JSON.parse(utils.getLocalStorage(USER)).role;
         }
         else {
@@ -55,7 +57,7 @@ export const AuthProvider = (props) => {
         }
     }
 
-    const [role, setRole] = useState(findRole());
+    const [role, setRole] = useState(/*findRole() */ "admin");
 
     // get current logged in user details
 
@@ -157,7 +159,7 @@ export const AuthProvider = (props) => {
         signup,
         signUpResponse,
         setSignUpResponse,
-        role,
+        logout,
         shouldUserNavigate,
         getLoggedInUserDetails
     }
