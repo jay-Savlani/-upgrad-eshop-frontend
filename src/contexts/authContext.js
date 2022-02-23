@@ -31,7 +31,7 @@ export const AuthProvider = (props) => {
 
     // when page is reloaded it will check if current user exists or user exists in local storage and it will set isLoggedIn as true
 
-    const [isLoggedIn, setIsLoggedIn] = useState(/*currentUser || utils.getLocalStorage(USER) ? true : false */false);
+    const [isLoggedIn, setIsLoggedIn] = useState(currentUser || utils.getLocalStorage(USER) ? true : false );
 
     const [loginResponse, setLoginResponse] = useState("");
     const [signUpResponse, setSignUpResponse] = useState("");
@@ -48,7 +48,9 @@ export const AuthProvider = (props) => {
             console.log("entered current user if");
             return currentUser.role;
         }
-        else if(utils.getLocalStorage(USER)) {
+        else if(utils.getLocalStorage(USER) !== "undefined" || utils.getLocalStorage(USER) !==null ) {
+            console.log(utils.getLocalStorage(USER))
+            console.log(utils.getLocalStorage(USER) !== "undefined" );
             console.log("entered json parse if");
             return JSON.parse(utils.getLocalStorage(USER)).role;
         }
@@ -57,7 +59,7 @@ export const AuthProvider = (props) => {
         }
     }
 
-    const [role, setRole] = useState(/*findRole() */ "admin");
+    const [role, setRole] = useState( USER );
 
     // get current logged in user details
 
@@ -73,17 +75,19 @@ export const AuthProvider = (props) => {
 
     // login method
 
-    const login = ({ email, password }, successCallback, failureCallback) => {
+    const login = ({ email, password }, successCallback) => {
         // making request
         userApi.login(
             email,
             password,
             // successCb
             (response, headers) => {
-                if (response.user) {
-                    setCurrentUser(response.user);
+                if (response && headers) {
+                    console.log("entered if of response")
+                    setCurrentUser(response);
                     // store in local storage
-                    utils.setLocalStorage(USER, response.user);
+                    console.log("reached set local storage");
+                    utils.setLocalStorage(USER, response);
                     // setting token in local storage 
                     utils.setLocalStorage(TOKEN, headers["x-auth-token"]);
                     // setting token 
@@ -91,18 +95,18 @@ export const AuthProvider = (props) => {
                     // set login response
                     setLoginResponse(response.message);
                     // setting role 
-                    setRole(response.user.role);
+                    setRole(response.role);
                     // setIsLoggedIn as true 
                     setIsLoggedIn(true);
                     // allow user to navigate
                     setShouldUserNavigate(true);
+                    console.log("reached success callback")
                     successCallback();
                 }
             },
             // failire Cb
             (errorMessage) => {
                 setLoginResponse(errorMessage);
-                failureCallback();
             }
         )
     }

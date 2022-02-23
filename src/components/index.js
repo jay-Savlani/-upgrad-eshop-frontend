@@ -1,7 +1,11 @@
 import Navbar from "./navbar/Navbar";
 
-import Login from "./login/Login";
+import Login from "./forms/login/Login";
 
-import Layout from "./layout/Layout";
+import SignUp from "./forms/signup/SignUp";
 
-export {Navbar, Login, Layout};
+import SignInImage from "./sign_in_image/SignInImage";
+
+import Products from "./product/products /Products";
+
+export {Navbar, Login, SignInImage, SignUp, Products};

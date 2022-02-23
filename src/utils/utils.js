@@ -39,3 +39,19 @@ export const getLocalStorage = (key) => {
 }
 
 
+
+export const delay = (ms) => {
+    return new Promise((resolve) => {
+        setTimeout(() => resolve(), ms);
+    })
+}
+
+export const checkValidEmail = (email) => {
+    if (email) {
+      // Credits - https://stackoverflow.com/a/46181/7452548
+      const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  
+      return regex.test(email.toString().toLowerCase());
+    }
+    return false;
+  };

@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // importing components 
 
-import { Navbar, Login, Layout } from "../components";
+import { Navbar, Login, SignUp, Products } from "../components";
 
 // importing ProtectedRoute
 
@@ -19,9 +19,9 @@ export default function RouteController() {
         <Router>
             <AuthProvider>
                 <Routes>
-                    <Route path="/" element={<Layout />} >
-                        <Route exact path="signin" element={<Login />} />
-                    </Route>
+                    <Route exact path={routeConstants.SIGNIN} element={<Login />} />
+                    <Route exact path={routeConstants.SIGNUP} element={<SignUp />} />
+                    <Route exact path={routeConstants.PRODUCTS} element={<Products />} />
                 </Routes>
             </AuthProvider>
         </Router>

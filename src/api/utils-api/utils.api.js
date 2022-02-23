@@ -8,7 +8,7 @@ import axios from "../axios.config";
 
 
 
- const buildUrlWithPathParameters = (pathParameters) => {
+const buildUrlWithPathParameters = (pathParameters) => {
     if (pathParameters && pathParameters.length !== 0) {
         let pathParametersString = "";
         for (let i = 0; i < pathParameters.length; i++) {
@@ -26,24 +26,24 @@ import axios from "../axios.config";
  */
 
 const buildUrlwithQueries = (queryData) => {
-   // if queryData is null then entry empty string
-    if(!queryData) {
-       return "";
-   }
+    // if queryData is null then entry empty string
+    if (!queryData) {
+        return "";
+    }
 
-   let queryString = "";
+    let queryString = "";
 
-   for(const key in queryData) {
+    for (const key in queryData) {
         // once query string has been added with data, keep on adding &
-        if(queryString) {
+        if (queryString) {
             queryString += "&";
         }
         queryString += key + "=" + queryData[key];
-   }
+    }
 
-   // add question mark at the front of the entire query string
+    // add question mark at the front of the entire query string
 
-   queryString = "?" + queryString;
+    queryString = "?" + queryString;
 
 }
 
@@ -61,14 +61,14 @@ const buildUrlwithQueries = (queryData) => {
 
 
 export const sendAxiosRequest = async (
-   method,
-   url,
-   paramsArray,
-   queryDataObj,
-   body,
-   headersObj,
-   successCb,
-   failureCb
+    method,
+    url,
+    paramsArray,
+    queryDataObj,
+    body,
+    headersObj,
+    successCb,
+    failureCb
 ) => {
     // build url with data provided
     url = url + buildUrlWithPathParameters(paramsArray) + buildUrlwithQueries(queryDataObj);
@@ -84,15 +84,19 @@ export const sendAxiosRequest = async (
         });
 
         // checking if response is 200
-        if(response && response.status === 200) {
+        if (response && response.status === 200) {
             // if successCb exists then call it with passing response data
-            if(successCb, response.headers) 
-                successCb(response.data);
+            if (successCb)
+                successCb(response.data, response.headers);
         }
     }
-    catch(error) {
+    catch (error) {
         // if there is error call failureCb with error message
-        if(failureCb)
-            failureCb(JSON.parse(error.request.responseText).message);
+        console.log("entered catch block");
+        console.log("error in catch block", error);
+        if (error) {
+            if (failureCb)
+                failureCb(JSON.parse(error.request.responseText).message);
+        }
     }
 }
