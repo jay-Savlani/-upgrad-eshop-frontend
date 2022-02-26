@@ -5,7 +5,8 @@ const routeConstants = {
     PRODUCT_DETAIL: "/products/:id",
     ORDERS: "/orders",
     PRODUCT_UPDATE: "/products/update/:id",
-    PRODUCT_ADD: "/products/add"
+    PRODUCT_ADD: "/products/add",
+    ROOT: "/"
 }
 
 

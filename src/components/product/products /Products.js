@@ -1,7 +1,11 @@
-import React from 'react'
+import React from 'react';
+
+import {Navbar} from "../../../components";
 
 export default function Products() {
   return (
-    <div>Products</div>
+    <div>
+      <Navbar />
+    </div>
   )
 }

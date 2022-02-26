@@ -8,4 +8,6 @@ import SignInImage from "./sign_in_image/SignInImage";
 
 import Products from "./product/products /Products";
 
-export {Navbar, Login, SignInImage, SignUp, Products};
+import InfoBar from "./info_bar/InfoBar";
+
+export {Navbar, Login, SignInImage, SignUp, Products, InfoBar};

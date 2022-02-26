@@ -4,11 +4,17 @@ import React, { useState } from 'react';
 
 import { useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
 
+// importing hooks
+
+import { useLoader, useBar } from '../../hooks';
+
+// importing util functions
+
+import * as utils from "../../utils/utils";
+
 // import useAuth hook to use Auth Context
 
 import { useAuth } from '../../contexts/authContext';
-
-// importin useNavigate from react router
 
 // importing router constants
 
@@ -28,6 +34,10 @@ import { AppBar, Toolbar, IconButton, InputBase, Button, Typography } from '@mat
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { Search } from '@material-ui/icons';
 
+// importing useBar
+
+
+
 export default function Navbar() {
 
   // using styles 
@@ -37,6 +47,10 @@ export default function Navbar() {
   const { isLoggedIn, role, logout } = useAuth();
 
   const navigate = useNavigate();
+
+  const [isLoading, showLoader, hideLoader, Loader] = useLoader();
+
+  const [showNotification, notify, stopNotify, notification] = useBar();
 
   // using location
 
@@ -51,7 +65,7 @@ export default function Navbar() {
   }
 
   const onSignUpClick = () => {
-    navigate(routeConstants.SIGNUP, {state: {from: location}, replace: true});
+    navigate(routeConstants.SIGNUP, { state: { from: location }, replace: true });
   }
 
   const onAddProductClick = () => {
@@ -59,42 +73,46 @@ export default function Navbar() {
   }
 
   const onLogoutClick = () => {
-
+    logout(async () => {
+      notify("Logout successfull");
+      await utils.delay(3000);
+      stopNotify();
+    });
   }
-
 
   return (
     <div>
-    <AppBar>
-      <Toolbar className={classes.toolBar}>
-        <div className={classes.logoContainer}>
-          <IconButton>
-            <ShoppingCartIcon className={classes.logo} />
-          </IconButton>
-          <Typography>upGrad E-shop</Typography>
-        </div>
+      {notification}
+      <AppBar>
+        <Toolbar className={classes.toolBar}>
+          <div className={classes.logoContainer}>
+            <IconButton>
+              <ShoppingCartIcon className={classes.logo} />
+            </IconButton>
+            <Typography>upGrad E-shop</Typography>
+          </div>
 
-        {isLoggedIn && (
-          <InputBase
-            className={classes.searchBar}
-            autoComplete="off"
-            placeholder='Search Products'
-            startAdornment={<Search className={classes.searchIcon} />}
-            inputProps={{ "area-label": "search" }}
-          />
-        )}
+          {isLoggedIn && (
+            <InputBase
+              className={classes.searchBar}
+              autoComplete="off"
+              placeholder='Search Products'
+              startAdornment={<Search className={classes.searchIcon} />}
+              inputProps={{ "area-label": "search" }}
+            />
+          )}
 
-        <div className={classes.loginBtnGroup}>
-          <button onClick={navigateToHome}>Home</button>
-          {!isLoggedIn && role == "admin" ? (<button onClick={onAddProductClick}>Add Product</button>) : ""}
-          {!isLoggedIn && (<button onClick={onLoginClick}>Login</button>)}
-          {!isLoggedIn && (<button onClick={onSignUpClick}>Signup</button>)}
-          {isLoggedIn && (<Button id="logout-btn" varaint="contained" className={classes['logout-btn']} onClick={onLogoutClick}>Logout</Button>)}
-        </div>
-        
+          <div className={classes.loginBtnGroup}>
+            <button onClick={navigateToHome}>Home</button>
+            {!isLoggedIn && role == "admin" ? (<button onClick={onAddProductClick}>Add Product</button>) : ""}
+            {!isLoggedIn && (<button onClick={onLoginClick}>Login</button>)}
+            {!isLoggedIn && (<button onClick={onSignUpClick}>Signup</button>)}
+            {isLoggedIn && (<Button id="logout-btn" varaint="contained" className={classes['logout-btn']} onClick={onLogoutClick}>Logout</Button>)}
+          </div>
 
-      </Toolbar>
-    </AppBar>
+
+        </Toolbar>
+      </AppBar>
     </div>
   )
 }

@@ -48,9 +48,8 @@ export const AuthProvider = (props) => {
             console.log("entered current user if");
             return currentUser.role;
         }
-        else if(utils.getLocalStorage(USER) !== "undefined" || utils.getLocalStorage(USER) !==null ) {
+        else if(utils.getLocalStorage(USER) !== "" ) {
             console.log(utils.getLocalStorage(USER))
-            console.log(utils.getLocalStorage(USER) !== "undefined" );
             console.log("entered json parse if");
             return JSON.parse(utils.getLocalStorage(USER)).role;
         }
@@ -59,7 +58,7 @@ export const AuthProvider = (props) => {
         }
     }
 
-    const [role, setRole] = useState( USER );
+    const [role, setRole] = useState( findRole() );
 
     // get current logged in user details
 
@@ -83,10 +82,9 @@ export const AuthProvider = (props) => {
             // successCb
             (response, headers) => {
                 if (response && headers) {
-                    console.log("entered if of response")
+                 
                     setCurrentUser(response);
                     // store in local storage
-                    console.log("reached set local storage");
                     utils.setLocalStorage(USER, response);
                     // setting token in local storage 
                     utils.setLocalStorage(TOKEN, headers["x-auth-token"]);
@@ -100,7 +98,6 @@ export const AuthProvider = (props) => {
                     setIsLoggedIn(true);
                     // allow user to navigate
                     setShouldUserNavigate(true);
-                    console.log("reached success callback")
                     successCallback();
                 }
             },

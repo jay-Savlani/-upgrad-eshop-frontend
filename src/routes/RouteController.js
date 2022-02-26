@@ -19,6 +19,8 @@ export default function RouteController() {
         <Router>
             <AuthProvider>
                 <Routes>
+                    <Route exact path={routeConstants.ROOT} element = {<Products />} />
+                    <Route exact path={routeConstants.PRODUCTS} element={<Products />} />
                     <Route exact path={routeConstants.SIGNIN} element={<Login />} />
                     <Route exact path={routeConstants.SIGNUP} element={<SignUp />} />
                     <Route exact path={routeConstants.PRODUCTS} element={<Products />} />

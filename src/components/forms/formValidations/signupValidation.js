@@ -13,7 +13,16 @@ const signupValidation = (values) => {
         confirmPassword: "",
         contactNumber: ""
     }
+
+    if(!values.firstName.trim()) {
+        errors.firstName = "Required"
+    }
     
+
+    if(!values.lastName.trim()) {
+        errors.lastName = "Required"
+    }
+
     if(!values.email.trim()) {
         errors.email = "Required"
     }
@@ -36,7 +45,7 @@ const signupValidation = (values) => {
     }
 
     if(values.contactNumber.toString().length < 10 ) {
-        errors.contactNumber = "Contact Number should be atleast 10 digits"
+        errors.contactNumber = "Please enter 10 digits"
     }
 
     return errors;

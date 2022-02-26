@@ -1,0 +1,16 @@
+#bar-div {
+    width: 20vw;
+    height: 30px;
+    position: absolute;
+    top: 80vh;
+    z-index: 99;
+    transition: width 2s;
+    background-color: #f50057;
+    color: white;
+    border-top-right-radius: 2em;
+    border-bottom-right-radius: 2em;
+    text-align: center;
+    padding-top: 0.75rem;
+}
+
+

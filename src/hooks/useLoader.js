@@ -8,7 +8,6 @@ const useLoader = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const showLoader = () => {
-        console.log("Inside show loader")
         setIsLoading(true);
     }
 
