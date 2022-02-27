@@ -45,6 +45,8 @@ const buildUrlwithQueries = (queryData) => {
 
     queryString = "?" + queryString;
 
+    return queryString;
+
 }
 
 /**
@@ -72,7 +74,7 @@ export const sendAxiosRequest = async (
 ) => {
     // build url with data provided
     url = url + buildUrlWithPathParameters(paramsArray) + buildUrlwithQueries(queryDataObj);
-
+    // console.log("url in send axios request: ", url);
     // send axios request
 
     try {
@@ -92,7 +94,7 @@ export const sendAxiosRequest = async (
     }
     catch (error) {
         // if there is error call failureCb with error message
-        console.log("entered catch block");
+        // console.log("entered catch block");
         console.log("error in catch block", error);
         if (error) {
             if (failureCb)

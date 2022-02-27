@@ -15,15 +15,15 @@ export const addAddress = (
 
     // using auth context
 
-    const { token, getLoggedInUserDetails } = useAuth();
+  
 
     utilsApi.sendAxiosRequest(
         apiConstants.HTTP_METHOD.POST,
         apiConstants.ADDRESS.ADD_ADDRESS,
         null,
         null,
-        {...addressData , userEmail: getLoggedInUserDetails().email},
-        { ["x-auth-token"]: token },
+        {...addressData , userEmail: ""},
+        { ["x-auth-token"]: "" },
         successCb,
         failureCb
     )

@@ -22,15 +22,15 @@ export const addAddress = (
 
     // using auth context
 
-    const { token, getLoggedInUserDetails } = useAuth();
+
 
     utilsApi.sendAxiosRequest(
         apiConstants.HTTP_METHOD.POST,
         apiConstants.ORDER.ADD_ORDER,
         null,
         null,
-        {...orderData , userId: getLoggedInUserDetails().user_id},
-        { ["x-auth-token"]: token },
+        {...orderData , userId: ""},
+        { ["x-auth-token"]: "" },
         successCb,
         failureCb
     )

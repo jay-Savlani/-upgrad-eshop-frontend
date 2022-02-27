@@ -2,6 +2,8 @@
 
 import {useLocation, Navigate} from "react-router-dom";
 
+import { routeConstants } from ".";
+
 // importing useAuth Context 
 
 import { useAuth } from "../contexts/authContext";
@@ -18,7 +20,7 @@ export default function ProtectedRoute({children}){
     const {isLoggedIn} = useAuth();
 
     if(!isLoggedIn) {
-        return (<Navigate to="/login" state={{from: location}} />)
+        return (<Navigate to={routeConstants.SIGNIN} state={{from: location}} />)
     }
 
     return (children);

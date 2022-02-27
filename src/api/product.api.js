@@ -12,11 +12,10 @@ import * as utils from "../utils/utils";
 
 // importin useAuthContext
 
-import { useAuth } from "../contexts/authContext";
 
 // token is used in many places hence keeping it global
 
-const {token} = useAuth();
+
 
 /**
  * Function to get products based on product id as url param or on query data as url query
@@ -76,7 +75,7 @@ export const addProduct = (productData,successCb, failureCb) => {
         null,
         null,
         productData,
-        {["x-auth-token"] : token},
+        {["x-auth-token"] : ""},
         successCb,
         failureCb
     )
@@ -98,7 +97,7 @@ export const addProduct = (productData,successCb, failureCb) => {
         null,
         null,
         productData,
-        {["x-auth-token"] : token},
+        {["x-auth-token"] : ""},
         successCb,
         failureCb
     )
@@ -121,7 +120,7 @@ export const addProduct = (productData,successCb, failureCb) => {
         paramsArray,
         null,
         null,
-        {["x-auth-token"] : token},
+        {["x-auth-token"] : ""},
         successCb,
         failureCb
     )

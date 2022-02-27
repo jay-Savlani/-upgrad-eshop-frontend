@@ -38,7 +38,7 @@ import { Search } from '@material-ui/icons';
 
 
 
-export default function Navbar() {
+export default function Navbar(props) {
 
   // using styles 
 
@@ -80,7 +80,14 @@ export default function Navbar() {
     });
   }
 
+  const handleSearchChange = (e) => {
+    console.log("handle search change fired")
+    props.setSearchValue(e.target.value);    
+  }
+
+
   return (
+   
     <div>
       {notification}
       <AppBar>
@@ -95,6 +102,8 @@ export default function Navbar() {
           {isLoggedIn && (
             <InputBase
               className={classes.searchBar}
+              value = {props.searchValue}
+              onChange = {handleSearchChange}
               autoComplete="off"
               placeholder='Search Products'
               startAdornment={<Search className={classes.searchIcon} />}
