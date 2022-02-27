@@ -1,3 +1,8 @@
+
+import {routeConstants} from "../routes";
+
+
+
 /**
  * Function to set item in local storage
  * @param {String} key - key to be used to store value in local storage 
@@ -48,10 +53,19 @@ export const delay = (ms) => {
 
 export const checkValidEmail = (email) => {
     if (email) {
-      // Credits - https://stackoverflow.com/a/46181/7452548
-      const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  
-      return regex.test(email.toString().toLowerCase());
+        // Credits - https://stackoverflow.com/a/46181/7452548
+        const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        return regex.test(email.toString().toLowerCase());
     }
     return false;
-  };
+};
+
+
+
+
+export const getProductDetailsUrl = (product_id) => {
+    const regex = /:id/i;
+    return routeConstants.PRODUCT_DETAIL.replace(regex, product_id);
+
+}

@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // importing components 
 
-import { Navbar, Login, SignUp, Products } from "../components";
+import { Navbar, Login, SignUp, Products, ProductDetails, Orders } from "../components";
 
 // importing ProtectedRoute
 
@@ -27,6 +27,16 @@ export default function RouteController() {
                    <Route exact path={routeConstants.PRODUCTS}
                         element={<ProtectedRoute>
                             <Products />
+                        </ProtectedRoute>}
+                    />
+                    <Route exact path={routeConstants.PRODUCT_DETAIL}
+                        element={<ProtectedRoute>
+                            <ProductDetails />
+                        </ProtectedRoute>}
+                    />
+                    <Route exact path={routeConstants.ORDERS}
+                        element={<ProtectedRoute>
+                            <Orders />
                         </ProtectedRoute>}
                     />
                     <Route exact path={routeConstants.SIGNIN} element={<Login />} />

@@ -14,7 +14,8 @@ const buildUrlWithPathParameters = (pathParameters) => {
         for (let i = 0; i < pathParameters.length; i++) {
             pathParametersString += `/${pathParameters[i]}`
         }
-        return pathParameters;
+       
+        return pathParametersString;
     }
     else return "";
 }

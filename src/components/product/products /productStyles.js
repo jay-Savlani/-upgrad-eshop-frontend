@@ -18,10 +18,7 @@ const useStyles = makeStyles(theme => ({
         display: "flex",
         flexDirection: "column"
     },
-    toggleButtonContainer: {
-        display: "flex",
-        justifyContent: "center"
-    },
+    
     filterContainer: {
         marginTop: theme.spacing(3)
     },

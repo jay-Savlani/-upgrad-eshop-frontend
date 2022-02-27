@@ -14,7 +14,7 @@ import { utilsApi, apiConstants } from "./utils-api";
  * @param {Function} failureCb - Function to be called if request fails
  */
 
-export const addAddress = (
+export const addOrder = (
     orderData,
     successCb,
     failureCb

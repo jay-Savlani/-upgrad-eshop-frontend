@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-import { Navbar } from "../../../components";
+import { Navbar, ToggleCategories } from "../../../components";
 
 import useStyles from './productStyles';
+
+// react router imports
+
+import { useNavigate } from 'react-router-dom';
 
 // importing custom hooks
 
@@ -16,9 +20,10 @@ import { productApi } from '../../../api';
 
 import * as utils from "../../../utils/utils";
 
+import { routeConstants } from '../../../routes';
+
 // material ui imports 
 
-import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import { Card, CardActions, CardContent, CardMedia, FormControl, InputLabel, Select, Typography, Button, IconButton } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -29,13 +34,14 @@ export default function Products() {
 
   const {role} = useAuth();
 
+  const navigate = useNavigate();
+
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const [filter, setFilter] = useState("");
 
   const [searchValue, setSearchValue]  = useState("");
 
-  const [categories, setCategories] = useState([]);
 
   const [productData, setProductData] = useState([]);
 
@@ -52,6 +58,11 @@ export default function Products() {
 
   const handleSelectChange = (e) => {
     setFilter(e.target.value);
+  }
+
+  const navigateToProductDetails =  (product_id) => {
+    const productDetailsUrl = utils.getProductDetailsUrl(product_id);
+    navigate(productDetailsUrl);
   }
 
   useEffect(() => {
@@ -84,23 +95,7 @@ export default function Products() {
     
   }, [filter, selectedCategory, searchValue]);
 
-  useEffect(async () => {
-
-    productApi.getProductCategories(
-      async (response) => {
-        
-      
-        setCategories(response.categories);
-        
-      },
-      async () => {
-        notify("Error in fetching categores");
-        await utils.delay(2000);
-        stopNotify();
-      }
-    )
-
-  }, []);
+  
 
 
   return (
@@ -115,25 +110,8 @@ export default function Products() {
 
           <div>
             {/* Toggle Button Group */}
-            <div className={classes.toggleButtonContainer}>
-              <ToggleButtonGroup
-                exclusive
-                value={selectedCategory}
-                onChange={handleCategoryChange}
-              >
-              <ToggleButton value="">
-                ALL
-              </ToggleButton>
-                {
-                  categories.map((category, index) => {
-
-                    return <ToggleButton value={category.toLowerCase()} key={index}>
-                      {category.toUpperCase()}
-                    </ToggleButton>
-                  })
-                }
-              </ToggleButtonGroup>
-            </div>
+              <ToggleCategories selectedCategory={selectedCategory} handleCategoryChange={handleCategoryChange} />
+            
           </div>
 
           <div>
@@ -201,7 +179,7 @@ export default function Products() {
 
                             <CardActions>
                                 <div className={classes.cardActionDiv} >
-                                    <Button variant="contained" color="primary" size="small">BUY</Button>
+                                    <Button onClick={() => navigateToProductDetails(product.product_id)} variant="contained" color="primary" size="small">BUY</Button>
                                 
                                 {/* If role is admin then add edit and delete buttons */}
                                

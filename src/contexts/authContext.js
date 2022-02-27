@@ -45,13 +45,11 @@ export const AuthProvider = (props) => {
 
     function findRole() {
         if(currentUser) {
-            console.log("entered current user if");
+            
             return currentUser.role;
         }
         else if(utils.getLocalStorage(USER) !== "" ) {
-            
-            console.log(utils.getLocalStorage(USER))
-            console.log("entered json parse if");
+        
             return JSON.parse(utils.getLocalStorage(USER)).role;
         }
         else {
