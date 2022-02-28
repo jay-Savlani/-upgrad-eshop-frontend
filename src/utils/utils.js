@@ -69,3 +69,17 @@ export const getProductDetailsUrl = (product_id) => {
     return routeConstants.PRODUCT_DETAIL.replace(regex, product_id);
 
 }
+
+
+export const isObjectEmpty = (object) => {
+    
+    let isEmpty = true;
+    
+    for(const key in object) {
+        if(object[key] !== "") {
+            isEmpty = false;
+        }
+    }
+
+    return isEmpty;
+}

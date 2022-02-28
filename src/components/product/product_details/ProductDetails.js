@@ -43,12 +43,14 @@ export default function ProductDetails() {
   }
 
   const handleOrderClick = () => {
-    
-      if(quantity <= 0 || quantity > product.availableItems ) {
+     
+      if(quantity <= 0 || quantity > Number(product.availableItems) ) {
+          setPlaceOrderClicked(!placeOrderClicked);
           setOrderError("Invalid Order Quantity");
+         
       }
       else  {
-        setPlaceOrderClicked(true);
+        setPlaceOrderClicked(!placeOrderClicked);
         setOrderError("");
         
       }
@@ -57,10 +59,10 @@ export default function ProductDetails() {
   useEffect(() => {
         if(placeOrderClicked && !orderError) {
           if(role === "user" && quantity > 0) {
-            navigate(routeConstants.ORDERS, {state: {productId: id, quantity: quantity}});
+            navigate(routeConstants.ORDERS, {state: {product: product, quantity: quantity}});
          }
         }
-  }, [orderError])
+  }, [placeOrderClicked])
 
   useEffect(() => {
     // make request

@@ -29,7 +29,7 @@ const useForms = (initialValues, formValidation, apiMethod, successCallback) => 
             }
         }
         // submit button is clicked at least once otherwise when the page loads it will run the useEffects
-        if (noError && isSubmitted) {
+        if (noError && isSubmitted && apiMethod) {
             apiMethod(values, () => {
                 if(successCallback) 
                 successCallback();

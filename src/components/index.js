@@ -8,4 +8,4 @@ import ToggleCategories from "./toggle_categories/ToggleCategories";
 import ProductDetails from "./product/product_details/ProductDetails";
 import Orders from "./orders/Orders";
 
-export {Navbar, Login, SignInImage, SignUp, Products, InfoBar, ToggleCategories, ProductDetails, Orders};
+export {Navbar, Login, SignInImage, SignUp, Products, InfoBar , ToggleCategories, ProductDetails, Orders};

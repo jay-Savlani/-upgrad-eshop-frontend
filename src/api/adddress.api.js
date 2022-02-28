@@ -9,6 +9,7 @@ import { utilsApi, apiConstants } from "./utils-api";
 
 export const addAddress = (
     addressData,
+    token,
     successCb,
     failureCb
 ) => {
@@ -22,8 +23,8 @@ export const addAddress = (
         apiConstants.ADDRESS.ADD_ADDRESS,
         null,
         null,
-        {...addressData , userEmail: ""},
-        { ["x-auth-token"]: "" },
+        addressData,
+        { ["x-auth-token"]: token },
         successCb,
         failureCb
     )

@@ -80,6 +80,7 @@ export const AuthProvider = (props) => {
             password,
             // successCb
             (response, headers) => {
+
                 if (response && headers) {
                  
                     setCurrentUser(response);
