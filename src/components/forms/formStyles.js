@@ -35,6 +35,9 @@ const useStyles = makeStyles(theme => ({
         },
         submitBtn: {
             marginTop: theme.spacing(1)
+        },
+        error: {
+            color: "red"
         }
 }));
 

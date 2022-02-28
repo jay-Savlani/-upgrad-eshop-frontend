@@ -7,7 +7,6 @@ const productFormValidation = (values) => {
 
     const errors = {
         name: "",
-        category: "",
         price: "",
         description: "",
         manufacturer: "",
@@ -18,10 +17,6 @@ const productFormValidation = (values) => {
         errors.name = "Required"
     }
     
-
-    if(!values.category) {
-        errors.category = "Required"
-    }
 
     if(values.price === "0" || values.price === "") {
         errors.price = "Required"

@@ -1,45 +1,28 @@
 import React, { useEffect, useState } from "react";
-
 // importing Styles
-
 import useStyles from "./addressStyles";
-
 // importing hooks
-
-import { useForms } from "../../../hooks";
-
+import { useForms, useSnackBar } from "../../../hooks";
 // importing contexts
-
 import { useAuth } from "../../../contexts/authContext";
-
 // import form validations
-
 import addressFormValidation from "./addressFormValidation";
-
 // material ui imports
-
-import { Typography, Button, TextField, FormControl, InputLabel, Select } from "@material-ui/core";
-
+import { Typography, Button, TextField, FormControl, InputLabel, Select, Snackbar } from "@material-ui/core";
 // importing utility functions
-
 import * as utils from "../../../utils/utils";
-
 // importing apis
-
 import { addressApi, userApi } from "../../../api";
 
 const Address = ({address, setAddress}) => {
 
-
-  // using Styles
-
-  const classes = useStyles();
+// using Styles
+const classes = useStyles();
 
   const {token , getLoggedInUserDetails} = useAuth();
-
-  const [addresses, setAddresses] = useState([]);
-
-  const [addAddressClicked, setAddAddressClicked] = useState(false);
+  const [showSnackBar, hideSnackBar, setMessage, setType , SnackBar] = useSnackBar();
+const [addresses, setAddresses] = useState([]);
+const [addAddressClicked, setAddAddressClicked] = useState(false);
 
   const initialValues = {
     name: "",
@@ -73,12 +56,16 @@ const Address = ({address, setAddress}) => {
           userEmail: getLoggedInUserDetails().email
         },  
         token,
-        () => {
+        (response) => {
           setAddAddressClicked(!addAddressClicked);
-          console.log("address added successfully");
+          setMessage(response.message);
+          setType("success");
+          showSnackBar();
         },
         (errorMessage) => {
-          console.log("Error in adding address: ", errorMessage);
+          setMessage(errorMessage);
+          setType("error");
+          showSnackBar();
         }
         
         )
@@ -109,7 +96,7 @@ const Address = ({address, setAddress}) => {
 
   return (
       <div className={classes.formContainer} >
-
+        {SnackBar}
         {/* Select Address */}
             <FormControl style={{ width: "100%", marginBottom: "5%" }} >
                 <InputLabel htmlFor='address-select'>SELECT ADDRESS</InputLabel>

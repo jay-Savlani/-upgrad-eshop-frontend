@@ -7,7 +7,7 @@ import InfoBar from "./info_bar/InfoBar";
 import ToggleCategories from "./toggle_categories/ToggleCategories";
 import ProductDetails from "./product/product_details/ProductDetails";
 import Orders from "./orders/Orders";
-import ModifyProduct from "./modify_product/ModifyProduct";
+import ModifyProduct from "./product/modify_product/ModifyProduct";
+import AddProduct from "./product/add_product/AddProduct";
 
-
-export {Navbar, Login, SignInImage, SignUp, Products, InfoBar  , ToggleCategories, ProductDetails, Orders, ModifyProduct};
+export {Navbar, Login, SignInImage, SignUp, Products, InfoBar  , ToggleCategories, ProductDetails, Orders, ModifyProduct, AddProduct};

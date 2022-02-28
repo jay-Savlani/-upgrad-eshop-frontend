@@ -1,35 +1,19 @@
 import React, { useEffect } from "react";
-
 // importing Styles
-
 import useStyles from "../formStyles";
-
 // importing hooks
-
 import { useLoader, useForms } from "../../../hooks";
-
 // importing contexts
-
 import { useAuth } from "../../../contexts/authContext";
-
 // router imports
-
 import { useNavigate } from "react-router-dom";
-
 import { routeConstants } from "../../../routes";
-
 // import form validations
-
 import { signupValidation } from "../formValidations";
-
 // material ui imports
-
 import { Typography, Button, TextField, FormControl } from "@material-ui/core";
-
 import { Navbar, SignInImage } from "../..";
-
 // importing utility functions
-
 import * as utils from "../../../utils/utils";
 
 const SignUp = () => {
@@ -39,15 +23,11 @@ const SignUp = () => {
     const classes = useStyles();
 
     const [isLoading, showLoader, hideLoader, Loader] = useLoader();
-
     const { signup, signUpResponse, setSignUpResponse } = useAuth();
+    const navigate = useNavigate();
 
-    const navigate=useNavigate();
-
-    const redirectToLogin =  () => {
-    
-            navigate(routeConstants.SIGNIN);
-        
+    const redirectToLogin = () => {
+        navigate(routeConstants.SIGNIN);
     }
 
     const initialValues = {
@@ -64,7 +44,6 @@ const SignUp = () => {
     const navigateToLogin = () => {
         navigate(routeConstants.SIGNIN);
     }
-
 
     useEffect(async () => {
         showLoader();
@@ -96,7 +75,7 @@ const SignUp = () => {
                                         onChange={handleInputChange}
 
                                     />
-                                    {errors.firstName ? (<Typography>{errors.firstName}</Typography>) : ""}
+                                    {errors.firstName ? (<Typography className={classes.error} >{errors.firstName}</Typography>) : ""}
                                 </FormControl>
                                 <FormControl style={{ margin: "10px 0" }}>
                                     <TextField
@@ -108,7 +87,7 @@ const SignUp = () => {
                                         value={values.lastName}
                                         onChange={handleInputChange}
                                     />
-                                    {errors.lastName ? (<Typography>{errors.lastName}</Typography>) : ""}
+                                    {errors.lastName ? (<Typography className={classes.error} >{errors.lastName}</Typography>) : ""}
                                 </FormControl>
                                 <FormControl style={{ margin: "10px 0" }}>
                                     <TextField
@@ -119,7 +98,7 @@ const SignUp = () => {
                                         value={values.email}
                                         onChange={handleInputChange}
                                     />
-                                    {errors.email ? (<Typography>{errors.email}</Typography>) : ""}
+                                    {errors.email ? (<Typography className={classes.error} >{errors.email}</Typography>) : ""}
                                 </FormControl>
                                 <FormControl style={{ margin: "10px 0" }}>
                                     <TextField
@@ -132,7 +111,7 @@ const SignUp = () => {
                                         value={values.password}
                                         onChange={handleInputChange}
                                     />
-                                    {errors.password ? (<Typography>{errors.password}</Typography>) : ""}
+                                    {errors.password ? (<Typography className={classes.error} >{errors.password}</Typography>) : ""}
                                 </FormControl>
                                 <FormControl style={{ margin: "10px 0" }}>
                                     <TextField
@@ -145,7 +124,7 @@ const SignUp = () => {
                                         value={values.confirmPassword}
                                         onChange={handleInputChange}
                                     />
-                                    {errors.confirmPassword ? (<Typography>{errors.confirmPassword}</Typography>) : ""}
+                                    {errors.confirmPassword ? (<Typography className={classes.error} >{errors.confirmPassword}</Typography>) : ""}
                                 </FormControl>
                                 <FormControl style={{ margin: "10px 0" }}>
                                     <TextField
@@ -157,7 +136,7 @@ const SignUp = () => {
                                         value={values.contactNumber}
                                         onChange={handleInputChange}
                                     />
-                                    {errors.contactNumber ? (<Typography>{errors.contactNumber}</Typography>) : ""}
+                                    {errors.contactNumber ? (<Typography className={classes.error} >{errors.contactNumber}</Typography>) : ""}
                                 </FormControl>
                                 <FormControl>
                                     <Button className={classes.submitBtn} fullWidth variant="contained" color="primary" onClick={handleSubmit}>SIGN UP</Button>
@@ -168,7 +147,7 @@ const SignUp = () => {
                                 {
                                     signUpResponse ?
                                         (<div style={{ textAlign: "center" }}>
-                                            <Typography>{signUpResponse}</Typography>
+                                            <Typography style={{ marginTop: "10px", fontWeight: "bold" }} >{signUpResponse}</Typography>
                                         </div>)
                                         : ""
                                 }

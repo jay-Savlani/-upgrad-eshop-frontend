@@ -1,43 +1,24 @@
 import React, { useEffect, useState } from "react";
-
 // importing Styles
-
 import useStyles from "../formStyles";
-
 // importing hooks
-
 import { useLoader, useForms } from "../../../hooks";
-
 // router imports
-
 import { useNavigate } from "react-router-dom";
-
 import { routeConstants } from "../../../routes";
-
 // importing useContexts
-
 import { useAuth } from "../../../contexts/authContext";
-
 // material ui imports
-
 import { Typography, Button, TextField, FormControl, IconButton, InputBase, Input, Icon, InputAdornment, OutlinedInput } from "@material-ui/core";
-
-import VisibilityIcon from '@material-ui/icons/Visibility';
-
 import { Navbar, SignInImage } from "../..";
-
 // importing utitlity functions
-
 import * as utils from '../../../utils/utils'
-
 // importing form validations
-
 import { loginValidation } from "../formValidations";
 
 const Login = () => {
 
     const [isLoading, showLoader, hideLoader, Loader] = useLoader();
-
     const { login, loginResponse, setLoginResponse } = useAuth();
 
     const initialValues = {
@@ -53,12 +34,7 @@ const Login = () => {
     }
 
     const [values, errors, handleInputChange, handleSubmit] = useForms(initialValues, loginValidation, login, navigateToProducts);
-
-
-
-
-
-    // using Styles
+    const classes = useStyles();
 
     useEffect(async () => {
         showLoader();
@@ -67,7 +43,7 @@ const Login = () => {
         setLoginResponse("");
     }, [])
 
-    const classes = useStyles();
+
 
     return (
         <div>
@@ -102,7 +78,7 @@ const Login = () => {
                                         name="password"
                                         value={values.password}
                                         onChange={handleInputChange}
-                                        
+
                                     />
 
                                     {errors.password ? (<Typography>{errors.password}</Typography>) : ""}
@@ -113,7 +89,7 @@ const Login = () => {
                                 {
                                     loginResponse ?
                                         (<div style={{ textAlign: "center" }}>
-                                            <Typography>{loginResponse}</Typography>
+                                            <Typography style={{ marginTop: "10px", fontWeight: "bold" }} >{loginResponse}</Typography>
                                         </div>)
                                         : ""
                                 }

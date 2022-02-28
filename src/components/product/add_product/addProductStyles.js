@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/styles";
 
-const useModifyProductStyles = makeStyles(theme => ({
+const useAddProductStyles = makeStyles(theme => ({
         title: {
             marginTop: theme.spacing(12),
             textAlign: "center",
@@ -17,7 +17,7 @@ const useModifyProductStyles = makeStyles(theme => ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center"
-        },
+        }
 }));
 
-export default useModifyProductStyles
+export default useAddProductStyles

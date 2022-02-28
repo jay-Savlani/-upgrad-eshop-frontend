@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import useStyles from './orderStyles';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Navbar } from '..';
@@ -8,7 +8,7 @@ import ConfirmOrder from './confirm_order/ConfirmOrder';
 import { useAuth } from '../../contexts/authContext';
 import { orderApi } from '../../api';
 import * as utils from '../../utils/utils';
-import { useSnackBar } from '../../hooks';
+import { useSnackBar, useLoader } from '../../hooks';
 import { routeConstants } from '../../routes';
 
 // material ui imports
@@ -26,45 +26,35 @@ function getSteps() {
 export default function Orders() {
 
   const classes = useStyles();
-
-  const {token ,role, getLoggedInUserDetails} = useAuth();
-
+  const { token, role, getLoggedInUserDetails } = useAuth();
   const location = useLocation();
-
   const navigate = useNavigate();
-
-  const [showSnackBar, hideSnackBar, setMessage, setType ,SnackBar] = useSnackBar();
-
+  const [showSnackBar, hideSnackBar, setMessage, setType, SnackBar] = useSnackBar();
+  const [isLoading, showLoader, hideLoader, Loader] = useLoader();
   const steps = getSteps();
-
   function getStepContent(step) {
-    switch(step) {
+    switch (step) {
       case 0: return (<Items product={location.state.product} quantity={location.state.quantity} />);
-      case 1: return (<Address  address={currentAddress} setAddress = {setCurrentAddress} />);
+      case 1: return (<Address address={currentAddress} setAddress={setCurrentAddress} />);
       case 2: return (<ConfirmOrder product={location.state.product} address={currentAddress} quantity={location.state.quantity} />)
     }
   }
 
-  // console.log("location state: ", location.state);
-
   // states
-
   const [activeStep, setActiveStep] = useState(0);
-
   const [currentAddress, setCurrentAddress] = useState({});
 
   // functions
-
   const handleNext = () => {
 
-    if(activeStep === 1 && utils.isObjectEmpty(currentAddress)) {
+    if (activeStep === 1 && utils.isObjectEmpty(currentAddress)) {
       setMessage("Please Select Address");
       setType("warning");
       showSnackBar();
       return;
     }
 
-    if(activeStep === 2 && role === "user") {
+    if (activeStep === 2 && role === "user") {
       // place order
       orderApi.addOrder(
         {
@@ -87,7 +77,7 @@ export default function Orders() {
           setType("error");
           setMessage(errorMessage);
           showSnackBar();
-        } 
+        }
       );
 
       return;
@@ -97,8 +87,14 @@ export default function Orders() {
   }
 
   const handleBack = () => {
-    setActiveStep (prevState => prevState - 1);
+    setActiveStep(prevState => prevState - 1);
   }
+
+  useEffect(async () => {
+      showLoader();
+      await utils.delay(700);
+      hideLoader();
+  }, []);
 
   return (
     <div>
@@ -107,9 +103,15 @@ export default function Orders() {
 
       <Navbar />
 
+      {
+        isLoading ? 
 
-
-      <div className={classes.mainContainer}>
+        (
+          <div className={classes.loaderContainer}>{Loader}</div> 
+        )
+        :
+        (
+          <div className={classes.mainContainer}>
 
           {/* Stepper */}
           <div>
@@ -118,26 +120,29 @@ export default function Orders() {
                 steps.map((label) => {
                   return (
                     <Step key={label}>
-                        <StepLabel>{label}</StepLabel>
+                      <StepLabel>{label}</StepLabel>
                     </Step>
                   )
                 })
               }
             </Stepper>
           </div>
-
+  
           {/* Body */}
-
+  
           <div className={classes.stepperBody}>
-              {getStepContent(activeStep)}
+            {getStepContent(activeStep)}
           </div>
-            
-            {/*Next and previous buttons  */}
+  
+          {/*Next and previous buttons  */}
           <div className={classes.nextPreviousButtonDiv}>
-                <Button onClick={handleBack} disabled={activeStep === 0} variant="contained" color="secondary">BACK</Button>
-                <Button onClick={handleNext} style={{marginLeft: "10px"}} variant="contained" color="primary">{activeStep === 2 ? "PLACE ORDER" : "NEXT"}</Button>
+            <Button onClick={handleBack} disabled={activeStep === 0} variant="contained" color="secondary">BACK</Button>
+            <Button onClick={handleNext} style={{ marginLeft: "10px" }} variant="contained" color="primary">{activeStep === 2 ? "PLACE ORDER" : "NEXT"}</Button>
           </div>
-      </div>
+        </div>
+        )
+      }
+     
 
 
     </div>

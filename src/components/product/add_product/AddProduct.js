@@ -1,69 +1,118 @@
-import React, {useState} from 'react';
-import { useAuth } from '../../contexts/authContext';
-import { Navbar } from '..';
+import React, {useState, useEffect, useMemo} from 'react';
+import { useAuth } from '../../../contexts/authContext';
+import { Navbar } from '../..';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { routeConstants } from '../../routes';
-import { useForms, useSnackBar } from '../../hooks';
-import productFormValidation from '../forms/formValidations/productFormValidation';
-import useStyles from '../forms/formStyles';
-import useModifyProductStyles from './modifyProductStyles';
-import { productApi } from '../../api';
-import { Button, FormControl, Typography, TextField } from "@material-ui/core";
-import * as utils from "../../utils/utils";
+import { routeConstants } from '../../../routes';
+import { useForms, useSnackBar } from '../../../hooks';
+import productFormValidation from "../../forms/formValidations/productFormValidation";
+import useStyles from '../../forms/formStyles';
+import useAddProductStyles from './addProductStyles';
+import { productApi } from '../../../api';
+import { Button, FormControl, Typography, TextField, InputLabel } from "@material-ui/core";
+import * as utils from '../../../utils/utils';
+import CreatableSelect from 'react-select/creatable';
 
-export default function ModifyProduct() {
+export default function AddProduct() {
 
     const { token, role } = useAuth();
 
-    const location = useLocation();
-
     const navigate = useNavigate();
 
-    const { name, category, price, description, manufacturer, availableItems, imageUrl } = location.state.product;
-
     const classes = useStyles();
-    const classesSpecific = useModifyProductStyles();
+    const classesSpecific = useAddProductStyles();
 
-
+    
+  
     {/*  { name, category, price, description, manufacturer, availableItems, imageUrl } */}
 
     const [productData, setProductData] = useState({
-        name: name,
-        category: category,
-        price: price,
-        description: description,
-        manufacturer: manufacturer,
-        availableItems: availableItems,
-        imageUrl: imageUrl
+        name: "",
+        price: "",
+        description: "",
+        manufacturer: "",
+        availableItems: "",
+        imageUrl: ""
     });
+
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const [selectCategoryError, setSelectCategoryError] = useState("");
+    const [addProductClicked, setAddProductClick] = useState(false);
 
     const [values, errors, handleInputChange, handleSubmit] = useForms(productData, productFormValidation);
 
     const [showSnackBar, hideSnackBar, setMessage, setType , SnackBar] = useSnackBar();
 
-    const modifyProduct = () => {
+    const addProduct = () => {
         handleSubmit();
-        if(utils.isObjectEmpty(errors)) {
-            // make request
-            productApi.modifyProduct(
-                location.state.product.product_id,
-                values,
-                token,
-                async (response) => {
-                    setMessage(response.message);
-                    setType("success");
-                    showSnackBar();
-                    await utils.delay(1000);
-                    navigate(routeConstants.PRODUCTS); 
-                },
-                (errorMessage => {
-                    setMessage(errorMessage);
-                    setType("error");
-                    showSnackBar();
-                })
-
-            )
+        
+        if(selectedCategory == "") {
+            
+            setSelectCategoryError("Required");
         }
+        else {
+            setSelectCategoryError("");
+        }
+        setAddProductClick(!addProductClicked);
+
+     }
+
+    const options = () => { 
+            return categories.map(category => {
+                return {value: category, label: category};
+            })
+        }
+        
+    
+
+    useEffect(() => {
+        console.log(options);
+        // fetch categories
+        productApi.getProductCategories(
+            (response) => {
+                setCategories(response.categories);
+            },
+            (errorMessage) => {
+                setType("error");
+                setMessage(errorMessage);
+                showSnackBar();
+            }
+        )
+    }, []);
+
+    useEffect(() => {
+        console.log("inside second useEffect");
+        console.log("is error empty: ", utils.isObjectEmpty(errors));
+        console.log("errors: ", errors);
+        if(selectedCategory !== "" &&  utils.isObjectEmpty(errors) && selectCategoryError === "" && role === "admin") {
+            console.log("inside if");
+                // make request
+                productApi.addProduct(
+                    {
+                        ...values,
+                        category: selectedCategory
+                    },
+                    token,
+                    async (response) => {
+                        setType("success");
+                        setMessage(response.message);
+                        showSnackBar();
+                        await utils.delay(700);
+                        navigate(routeConstants.PRODUCTS);
+
+                    },
+                    (errorMessage) => {
+                        setType("error");
+                        setMessage(errorMessage);
+                        showSnackBar();
+                    }
+                )
+        }
+    }, [addProductClicked])
+    
+    const handleSelectInputChange = (inputValue) => {
+        console.log(inputValue);
+        setSelectedCategory(inputValue.value);
     }
 
     return (
@@ -82,7 +131,7 @@ export default function ModifyProduct() {
 
 
                                 <div className={classesSpecific.title} >
-                                    <Typography className={classesSpecific.heading} variant="h4">MODIFY PRODUCT</Typography>
+                                    <Typography className={classesSpecific.heading} variant="h4">ADD PRODUCT</Typography>
                                 </div>
 
                                 <div className={classesSpecific.formContainer} >
@@ -98,19 +147,19 @@ export default function ModifyProduct() {
                                             value={values.name}
                                             onChange = {handleInputChange}
                                         />
-                                        {errors.name ? (<Typography>{errors.name}</Typography>) : ""}
+                                        {errors.name ? (<Typography className={classes.error} >{errors.name}</Typography>) : ""}
                                     </FormControl>
                                     <FormControl style={{ margin: "10px 0" }}>
 
-                                        <TextField
-                                            label="Category"
-                                            InputLabelProps={{ shrink: true }}
-                                            variant="outlined"
-                                            name="category"
-                                            value={values.category}
-                                            onChange = {handleInputChange}
+                                        <CreatableSelect
+                                            isClearable
+                                            placeholder="Select Category"
+                                            name= 'category'
+                                            onChange={handleSelectInputChange}
+                                            
+                                            options={options()}
                                         />
-                                        {errors.category ? (<Typography>{errors.category}</Typography>) : ""}
+                                        {selectCategoryError ? (<Typography className={classes.error} >{selectCategoryError}</Typography>) : ""}
 
                                     </FormControl>
                                     <FormControl style={{ margin: "10px 0" }}>
@@ -124,7 +173,7 @@ export default function ModifyProduct() {
                                             value={values.price}
                                             onChange = {handleInputChange}
                                         />
-                                        {errors.price ? (<Typography>{errors.price}</Typography>) : ""}
+                                        {errors.price ? (<Typography className={classes.error} >{errors.price}</Typography>) : ""}
 
                                     </FormControl>
                                     <FormControl style={{ margin: "10px 0" }}>
@@ -137,7 +186,7 @@ export default function ModifyProduct() {
                                             value={values.description}
                                             onChange = {handleInputChange}
                                         />
-                                        {errors.description ? (<Typography>{errors.description}</Typography>) : ""}
+                                        {errors.description ? (<Typography className={classes.error} >{errors.description}</Typography>) : ""}
 
                                     </FormControl>
                                     <FormControl style={{ margin: "10px 0" }}>
@@ -150,7 +199,7 @@ export default function ModifyProduct() {
                                             value={values.manufacturer}
                                             onChange = {handleInputChange}
                                         />
-                                        {errors.manufacturer ? (<Typography>{errors.manufacturer}</Typography>) : ""}
+                                        {errors.manufacturer ? (<Typography className={classes.error} >{errors.manufacturer}</Typography>) : ""}
 
                                     </FormControl>
                                     <FormControl style={{ margin: "10px 0" }}>
@@ -164,7 +213,7 @@ export default function ModifyProduct() {
                                             value={values.availableItems}
                                             onChange = {handleInputChange}
                                         />
-                                        {errors.availableItems ? (<Typography>{errors.availableItems}</Typography>) : ""}
+                                        {errors.availableItems ? (<Typography className={classes.error} >{errors.availableItems}</Typography>) : ""}
 
                                     </FormControl>
                                     <FormControl style={{ margin: "10px 0" }}>
@@ -180,7 +229,7 @@ export default function ModifyProduct() {
 
                                     </FormControl>
                                     <FormControl>
-                                        <Button className={classes.submitBtn} fullWidth variant="contained" color="primary" onClick={modifyProduct} >MODIFY PRODUCT</Button>
+                                        <Button className={classes.submitBtn} fullWidth variant="contained" color="primary" onClick={addProduct} >ADD PRODUCT</Button>
                                     </FormControl>
 
 
