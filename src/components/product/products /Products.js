@@ -1,29 +1,16 @@
 import React, { useState, useEffect } from 'react';
-
 import { Navbar, ToggleCategories } from "../../../components";
-
 import useStyles from './productStyles';
-
 // react router imports
-
 import { useNavigate } from 'react-router-dom';
-
 // importing custom hooks
-
-import { useLoader, useBar } from '../../../hooks';
-
+import { useLoader, useBar, useSnackBar, useDeleteDialog } from '../../../hooks';
 import { useAuth } from '../../../contexts/authContext';
-
 // importing product api
-
 import { productApi } from '../../../api';
-
 import * as utils from "../../../utils/utils";
-
 import { routeConstants } from '../../../routes';
-
 // material ui imports 
-
 import { Card, CardActions, CardContent, CardMedia, FormControl, InputLabel, Select, Typography, Button, IconButton } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -31,87 +18,114 @@ import DeleteIcon from '@material-ui/icons/Delete';
 export default function Products() {
 
   const classes = useStyles();
-
-  const {role} = useAuth();
-
+  const { token, role } = useAuth();
   const navigate = useNavigate();
-
   const [selectedCategory, setSelectedCategory] = useState("");
-
   const [filter, setFilter] = useState("");
-
-  const [searchValue, setSearchValue]  = useState("");
-
-
+  const [searchValue, setSearchValue] = useState("");
   const [productData, setProductData] = useState([]);
-
-
+  const [deleteClicked, setDeleteClicked] = useState(false);
+  const [deleteProductId, setDeleteProductId] = useState(0);
+  const [deleteProductName, setDeleteProductName] = useState("");
   const [isLoading, showLoader, hideLoader, Loader] = useLoader();
-
-  const [showNotification, notify, stopNotify, notification] = useBar();
-
+  const [showSnackBar, hideSnackBar, setMessage, setType, SnackBar] = useSnackBar();
+  
   const defaultImageUrl = "https://www.libertyshoesonline.com/pub/media/catalog/product/cache/d27f3f74a53679e84179ee8edfe784ba/g/u/guppy1esgreen_1.jpg";
-
+  
   const handleCategoryChange = (e, newCategory) => {
     setSelectedCategory(newCategory);
   }
-
   const handleSelectChange = (e) => {
     setFilter(e.target.value);
   }
-
-  const navigateToProductDetails =  (product_id) => {
+  const navigateToProductDetails = (product_id) => {
     const productDetailsUrl = utils.getProductDetailsUrl(product_id);
     navigate(productDetailsUrl);
   }
+  const navigateToModifyProduct = (product_id, product) => {
+    const productUpdateUrl = utils.getModifyProductUrl(product_id);
+    navigate(productUpdateUrl, { state: { product: product } });
+  }
 
-  useEffect(() => {
+  const deleteIconClickHandler = (product_id, productName) => {
+      openDialog();
+      setDeleteProductId(product_id);
+      setDeleteProductName(productName);
+  }
+
+  const deleteProduct = () => {
+    // make request
+    if(role === "admin") {
+      productApi.deleteProduct(
+        deleteProductId,
+        token,
+        () => {
+          setType("success");
+          setMessage(`Product with id - ${deleteProductId}, name - ${deleteProductName} deleted successfully!`)
+          showSnackBar();
+        },
+        (errorMessage) => {
+          setType("error");
+          setMessage(errorMessage)
+          showSnackBar();
+        }
+      );
+      setDeleteClicked(!deleteClicked);
+      closeDialog();
+    }
+
+  }
+
+  const [openDialog, closeDialog, onDeleteClick, DeleteDialog] = useDeleteDialog(deleteProduct);
+  
+    useEffect(() => {
 
     // mandatory fetch 
 
     // { category, direction, name, sortBy }
-    
-      productApi.getProducts(
-        {
-          category: selectedCategory,
-          direction: filter === "desc" || filter === "asc" ? filter : "desc",
-          name: searchValue,
-          sortBy: filter === "desc" || filter === "asc" ? "price" : filter
-        },
-        null,
-        async (response) => {
-          showLoader();
-          await utils.delay(700);
-          setProductData(response.products);
-          hideLoader();
-        },
-        async () => {
-          notify("Something went wrong");
-          await utils.delay(2000);
-          stopNotify();
-        }
-      )
-  
-    
-  }, [filter, selectedCategory, searchValue]);
 
-  
+    productApi.getProducts(
+      {
+        category: selectedCategory,
+        direction: filter === "desc" || filter === "asc" ? filter : "desc",
+        name: searchValue,
+        sortBy: filter === "desc" || filter === "asc" ? "price" : filter
+      },
+      null,
+      async (response) => {
+        showLoader();
+        await utils.delay(700);
+        setProductData(response.products);
+        hideLoader();
+      },
+      async () => {
+        setMessage("Something went wrong");
+        setType("error");
+        showSnackBar();
+      }
+    )
 
+
+  }, [filter, selectedCategory, searchValue, deleteClicked]);
 
   return (
     <div>
       <Navbar searchValue={searchValue} setSearchValue={setSearchValue} />
 
+      {SnackBar}
+
+      {DeleteDialog}
+
 
       <div className={classes.mainContainer} >
-        Main Container
+
 
         <div className={classes.productsPageContainer}>
 
           <div>
             {/* Toggle Button Group */}
-              <ToggleCategories selectedCategory={selectedCategory} handleCategoryChange={handleCategoryChange} />
-            
+            <ToggleCategories selectedCategory={selectedCategory} handleCategoryChange={handleCategoryChange} />
+
           </div>
 
           <div>
@@ -168,7 +182,7 @@ export default function Products() {
                               {/* Name and Price */}
                               <div className={classes.namePrice}>
                                 <Typography variant="h5">{product.name}</Typography>
-                               <Typography variant="h5">{`₹ ${product.price}`}</Typography>
+                                <Typography variant="h5">{`₹ ${product.price}`}</Typography>
 
                               </div>
                               {/* Manufactured */}
@@ -178,25 +192,25 @@ export default function Products() {
                             </CardContent>
 
                             <CardActions>
-                                <div className={classes.cardActionDiv} >
-                                    <Button onClick={() => navigateToProductDetails(product.product_id)} variant="contained" color="primary" size="small">BUY</Button>
-                                
+                              <div className={classes.cardActionDiv} >
+                                <Button onClick={() => navigateToProductDetails(product.product_id)} variant="contained" color="primary" size="small">BUY</Button>
+
                                 {/* If role is admin then add edit and delete buttons */}
-                               
+
                                 {
-                                  role === "admin" && 
+                                  role === "admin" &&
                                   (
                                     <div>
-                                        <IconButton>
-                                            <EditIcon />
-                                        </IconButton>
-                                        <IconButton>
-                                            <DeleteIcon />
-                                        </IconButton>
+                                      <IconButton onClick={() => navigateToModifyProduct(product.product_id, product)} >
+                                        <EditIcon />
+                                      </IconButton>
+                                      <IconButton>
+                                        <DeleteIcon onClick = {() => deleteIconClickHandler(product.product_id, product.name)} />
+                                      </IconButton>
                                     </div>
                                   )
                                 }
-                                </div>
+                              </div>
                             </CardActions>
 
                           </Card>

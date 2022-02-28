@@ -70,6 +70,10 @@ export const getProductDetailsUrl = (product_id) => {
 
 }
 
+export const getModifyProductUrl = (product_id) => {
+    const regex = /:id/i;
+    return routeConstants.PRODUCT_UPDATE.replace(regex, product_id);
+}
 
 export const isObjectEmpty = (object) => {
     

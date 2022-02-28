@@ -113,7 +113,7 @@ export default function Navbar(props) {
 
           <div className={classes.loginBtnGroup}>
             <button onClick={navigateToHome}>Home</button>
-            {!isLoggedIn && role == "admin" ? (<button onClick={onAddProductClick}>Add Product</button>) : ""}
+            {isLoggedIn && role === "admin" ? (<button onClick={onAddProductClick}>Add Product</button>) : ""}
             {!isLoggedIn && (<button onClick={onLoginClick}>Login</button>)}
             {!isLoggedIn && (<button onClick={onSignUpClick}>Signup</button>)}
             {isLoggedIn && (<Button id="logout-btn" varaint="contained" className={classes['logout-btn']} onClick={onLogoutClick}>Logout</Button>)}

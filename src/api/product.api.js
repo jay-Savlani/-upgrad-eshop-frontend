@@ -67,7 +67,7 @@ export const getProductCategories = (successCb,failureCb) => {
  * @param {Function} failureCb - Function to be executed if request fails
  */
 
-export const addProduct = (productData,successCb, failureCb) => {
+export const addProduct = (productData, token ,successCb, failureCb) => {
     // make axios request
     utilsApi.sendAxiosRequest(
         apiConstants.HTTP_METHOD.POST,
@@ -75,7 +75,7 @@ export const addProduct = (productData,successCb, failureCb) => {
         null,
         null,
         productData,
-        {["x-auth-token"] : ""},
+        {["x-auth-token"] : token},
         successCb,
         failureCb
     )
@@ -89,15 +89,15 @@ export const addProduct = (productData,successCb, failureCb) => {
  * @param {Function} failureCb - Function to be executed if request fails
  */
 
- export const modifyProduct = (productData ,successCb, failureCb) => {
+ export const modifyProduct = (product_id ,productData, token ,successCb, failureCb) => {
     // make axios request
     utilsApi.sendAxiosRequest(
-        apiConstants.HTTP_METHOD.POST,
+        apiConstants.HTTP_METHOD.PUT,
         apiConstants.PRODUCT.ADD_PRODCUT,
-        null,
+        [product_id],
         null,
         productData,
-        {["x-auth-token"] : ""},
+        {["x-auth-token"] : token},
         successCb,
         failureCb
     )
@@ -112,15 +112,15 @@ export const addProduct = (productData,successCb, failureCb) => {
  * @param {Function} failureCb - Function to be executed if request fails
  */
 
- export const deleteProduct = (paramsArray ,successCb, failureCb) => {
+ export const deleteProduct = (product_id, token ,successCb, failureCb) => {
     // make axios request
     utilsApi.sendAxiosRequest(
-        apiConstants.HTTP_METHOD.POST,
+        apiConstants.HTTP_METHOD.DELETE,
         apiConstants.PRODUCT.ADD_PRODCUT,
-        paramsArray,
+        [product_id],
         null,
         null,
-        {["x-auth-token"] : ""},
+        {["x-auth-token"] : token},
         successCb,
         failureCb
     )
