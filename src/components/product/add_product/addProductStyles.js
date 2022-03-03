@@ -4,6 +4,9 @@ const useAddProductStyles = makeStyles(theme => ({
         title: {
             marginTop: theme.spacing(12),
             textAlign: "center",
+            [theme.breakpoints.down("xs")]: {
+                marginTop: theme.spacing(20)
+            }
         },
         heading: {
             fontSize: "1.5rem",
@@ -16,7 +19,8 @@ const useAddProductStyles = makeStyles(theme => ({
             top: theme.spacing(2),
             display: "flex",
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
+            
         }
 }));
 

@@ -4,6 +4,9 @@ const useModifyProductStyles = makeStyles(theme => ({
         title: {
             marginTop: theme.spacing(12),
             textAlign: "center",
+            [theme.breakpoints.down("xs")]: {
+                marginTop: theme.spacing(20)
+            }
         },
         heading: {
             fontSize: "1.5rem",

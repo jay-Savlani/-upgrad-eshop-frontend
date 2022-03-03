@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
             padding: "0px 5%"
         },
         [theme.breakpoints.down("xs")]: {
-            padding: "0px 3%"
+            padding: "0px 3%",
+            top: theme.spacing(20),
         }
     },
     productDetailsPageContainer: {
@@ -33,12 +34,14 @@ const useStyles = makeStyles((theme) => ({
 
     },
     productDetailsImage: {
-        minWidth: "15vw",
-        minHeight: "50vh",
+        display: "flex",
+        justifyContent: "center",
+        width: "15vw",
+        height: "50vh",
         // border: "1px solid black",
         overflow: "hidden",
-        [theme.breakpoints.down("sm")]: {
-            textAlign: "center"
+        [theme.breakpoints.down("xs")]: {
+            width: "80vw"
         }
     },
     productContainer: {
@@ -61,7 +64,8 @@ const useStyles = makeStyles((theme) => ({
             "& > div": {
                 margin: "10px 0"
             }
-        }
+        },
+       
     },
     availableQuantity: {
         backgroundColor: theme.palette.primary.main,
@@ -77,6 +81,13 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         alignItems: "center"
     },
+    backToProducts: {
+        marginTop: theme.spacing(2),
+        [theme.breakpoints.down("xs")]: {
+            display: "flex",
+            justifyContent: "center"
+        }
+    }
 }))
 
 export default useStyles;

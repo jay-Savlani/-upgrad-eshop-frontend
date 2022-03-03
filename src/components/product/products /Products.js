@@ -61,8 +61,9 @@ export default function Products() {
         token,
         () => {
           setType("success");
-          setMessage(`Product with id - ${deleteProductId}, name - ${deleteProductName} deleted successfully!`)
+          setMessage(`Product ${deleteProductName} deleted successfully!`)
           showSnackBar();
+          setDeleteClicked(!deleteClicked);
         },
         (errorMessage) => {
           setType("error");
@@ -70,7 +71,7 @@ export default function Products() {
           showSnackBar();
         }
       );
-      setDeleteClicked(!deleteClicked);
+      
       closeDialog();
     }
 
@@ -83,6 +84,7 @@ export default function Products() {
     // mandatory fetch 
 
     // { category, direction, name, sortBy }
+    console.log("Selected category: ", selectedCategory);
 
     productApi.getProducts(
       {
@@ -95,6 +97,7 @@ export default function Products() {
       async (response) => {
         showLoader();
         await utils.delay(700);
+        console.log("Products received are: ", response.products);
         setProductData(response.products);
         hideLoader();
       },
@@ -124,7 +127,7 @@ export default function Products() {
 
           <div>
             {/* Toggle Button Group */}
-            <ToggleCategories selectedCategory={selectedCategory} handleCategoryChange={handleCategoryChange} />
+            <ToggleCategories key={deleteClicked} selectedCategory={selectedCategory} handleCategoryChange={handleCategoryChange} />
 
           </div>
 
@@ -172,11 +175,13 @@ export default function Products() {
 
                           <Card key={product.product_id} className={classes.card}>
 
+                            <div style={{display: "flex", justifyContent: "center"}}>
                             <CardMedia
                               className={classes.media}
                               image={product.imageUrl ? product.imageUrl : defaultImageUrl}
                               title="shoes"
                             />
+                            </div>
 
                             <CardContent>
                               {/* Name and Price */}
@@ -193,7 +198,7 @@ export default function Products() {
 
                             <CardActions>
                               <div className={classes.cardActionDiv} >
-                                <Button onClick={() => navigateToProductDetails(product.product_id)} variant="contained" color="primary" size="small">BUY</Button>
+                                <Button onClick={() => navigateToProductDetails(product._id)} variant="contained" color="primary" size="small">BUY</Button>
 
                                 {/* If role is admin then add edit and delete buttons */}
 
@@ -201,11 +206,11 @@ export default function Products() {
                                   role === "admin" &&
                                   (
                                     <div>
-                                      <IconButton onClick={() => navigateToModifyProduct(product.product_id, product)} >
+                                      <IconButton onClick={() => navigateToModifyProduct(product._id, product)} >
                                         <EditIcon />
                                       </IconButton>
                                       <IconButton>
-                                        <DeleteIcon onClick = {() => deleteIconClickHandler(product.product_id, product.name)} />
+                                        <DeleteIcon onClick = {() => deleteIconClickHandler(product._id, product.name)} />
                                       </IconButton>
                                     </div>
                                   )

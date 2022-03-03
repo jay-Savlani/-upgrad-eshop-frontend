@@ -18,12 +18,17 @@ const useStyles = makeStyles((theme) => ({
 
     },
     productDetailsImage: {
-        minWidth: "15vw",
-        minHeight: "50vh",
+        width: "30vw",
+        height: "50vh",
+        display: "flex",
         // border: "1px solid black",
         overflow: "hidden",
         [theme.breakpoints.down("sm")]: {
             textAlign: "center"
+        },
+        [theme.breakpoints.down("xs")]: {
+            width: "80vw",
+            justifyContent: "center"
         }
     },
     nameAndQuantityContainer: {

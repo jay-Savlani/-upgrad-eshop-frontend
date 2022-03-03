@@ -4,14 +4,20 @@ const useStyles = makeStyles(theme => ({
         searchBar: {
             background: theme.palette.primary.light,
             color: "white",
-            width: "20%"
+            width: "20%",
+            [theme.breakpoints.down("xs")]: {
+                width: "100%"
+            }
         },
         logo: {
             color: "white"
         },
         toolBar: {
             display: "flex",
-            justifyContent: "space-between"
+            justifyContent: "space-between",
+            [theme.breakpoints.down("xs")]: {
+                flexDirection: "column",
+            }
         },
         logoContainer: {
             display: "flex",
@@ -34,8 +40,8 @@ const useStyles = makeStyles(theme => ({
                 "&:hover": {
                     background: "#eb4b72"
                 }
-            }
-        },
+            },
+        }
 }));
 
 export default useStyles;

@@ -27,7 +27,8 @@ const useStyles = makeStyles(theme => ({
             top: theme.spacing(10),
             display: "flex",
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
+            
         },
         formControl: {
             marginTop: "10px",

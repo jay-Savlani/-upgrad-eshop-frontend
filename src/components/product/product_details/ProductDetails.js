@@ -49,8 +49,8 @@ export default function ProductDetails() {
   }
 
   useEffect(() => {
-    if (!orderError) {
-      if (role === "user" && quantity > 0) {
+    if (!orderError && quantity > 0) {
+      if (role === "user") {
         navigate(routeConstants.ORDERS, { state: { product: product, quantity: quantity } });
       }
       else {
@@ -97,7 +97,7 @@ export default function ProductDetails() {
                   <ToggleCategories />
                 </div>
 
-                <div>
+                <div  className={classes.backToProducts}>
                   <Button onClick={navigateToProductsPage} variant='contained' color="secondary" size="medium">
                     BACK TO PRODUCTS
                   </Button>
@@ -108,7 +108,7 @@ export default function ProductDetails() {
                   {/* Product Details image */}
 
                   <div className={classes.productDetailsImage}>
-                    <img src={defaultImage} />
+                    <img src={ product.imageUrl ? product.imageUrl : defaultImage} />
                   </div>
 
                   {/* Product Description container */}

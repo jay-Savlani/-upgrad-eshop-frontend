@@ -59,7 +59,7 @@ export default function Orders() {
       orderApi.addOrder(
         {
           userEmail: getLoggedInUserDetails().email,
-          productId: location.state.product.product_id,
+          productId: location.state.product._id,
           addressId: currentAddress.address_id,
           quantity: location.state.quantity
         },

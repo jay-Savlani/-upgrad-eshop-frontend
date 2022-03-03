@@ -40,7 +40,7 @@ export default function ModifyProduct() {
         if (utils.isObjectEmpty(errors)) {
             // make request
             productApi.modifyProduct(
-                location.state.product.product_id,
+                location.state.product._id,
                 values,
                 token,
                 async (response) => {

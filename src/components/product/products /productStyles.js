@@ -10,7 +10,8 @@ const useStyles = makeStyles(theme => ({
             padding: "0px 5%"
         },
         [theme.breakpoints.down("xs")]: {
-            padding: "0px 3%"
+            padding: "0px 3%",
+            top: theme.spacing(20)
         }
     },
     productsPageContainer: {
@@ -25,6 +26,7 @@ const useStyles = makeStyles(theme => ({
     media: {
        height: 250,
        width: 300,
+       
     //    [theme.breakpoints.down("sm")]: {
     //        width: "80%",
     //    }

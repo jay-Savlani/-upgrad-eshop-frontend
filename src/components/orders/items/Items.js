@@ -17,7 +17,7 @@ export default function Items({product, quantity}) {
             {/* Product Details image */}
 
             <div className={classes.productDetailsImage}>
-                <img src={defaultImage} />
+                <img src={product.imageUrl ? product.imageUrl : defaultImage} />
             </div>
 
             {/* Product Description container */}

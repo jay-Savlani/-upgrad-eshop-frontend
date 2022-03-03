@@ -25,25 +25,20 @@ export default function ToggleCategories(props) {
 
     const [showNotification, notify, stopNotify, notification] = useBar();
 
-
-
     useEffect(async () => {
 
         productApi.getProductCategories(
             async (response) => {
 
-
+                console.log("response categories: ", response.categories);
                 setCategories(response.categories);
 
-            },
-            async () => {
-                notify("Error in fetching categores");
-                await utils.delay(2000);
-                stopNotify();
             }
         )
 
     }, []);
+
+    
     return (
 
 

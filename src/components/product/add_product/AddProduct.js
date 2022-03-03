@@ -66,26 +66,21 @@ export default function AddProduct() {
     
 
     useEffect(() => {
-        console.log(options);
-        // fetch categories
+            // fetch categories
         productApi.getProductCategories(
             (response) => {
                 setCategories(response.categories);
             },
             (errorMessage) => {
-                setType("error");
-                setMessage(errorMessage);
-                showSnackBar();
+                
             }
         )
     }, []);
 
     useEffect(() => {
-        console.log("inside second useEffect");
-        console.log("is error empty: ", utils.isObjectEmpty(errors));
-        console.log("errors: ", errors);
+      
         if(selectedCategory !== "" &&  utils.isObjectEmpty(errors) && selectCategoryError === "" && role === "admin") {
-            console.log("inside if");
+        
                 // make request
                 productApi.addProduct(
                     {
